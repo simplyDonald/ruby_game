@@ -6,7 +6,7 @@ class Game
     #instance variables => available througout the class
     @player1 = Player.new("P1")
     @player2 = Player.new("P2")
-    @players =[@player1, @player2]
+    @players =[@player1, @player2].shuffle
     @current_player = ["Player 1","Player 2"]
   end
 
@@ -25,7 +25,7 @@ class Game
     puts "#{@player1.status} vs #{@player2.status}"
     puts "------NEW TURN--------"
 
-   
+  
 
   end
 
@@ -33,9 +33,9 @@ class Game
 
     until (end_of_game?) do
       @players.rotate!
-      @current_player.rotate!
       attack_player = @players.first
       current_player = @current_player.first
+      @current_player.rotate!
       puts current_player
 
       puts "Enter a number between 1 and 20"
@@ -59,7 +59,14 @@ class Game
 
       end
 
-      
+      if (end_of_game?)
+        winner = @player1.lives > 0 ? @player1 : @player2
+        puts "#{winner.name} wins with a score of #{winner.lives}/3"
+        puts "------GAME OVER--------"
+        puts "Good bye!"
+
+        break
+      end
 
       end_round
 
