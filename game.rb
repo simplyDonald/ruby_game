@@ -4,25 +4,24 @@ require_relative './game_wizard'
 class Game
   def initialize
     #instance variables => available througout the class
-    @player1 = Player.new("P1")
-    @player2 = Player.new("P2")
-    @players =[@player1, @player2].shuffle
-    @current_player = ["Player 1","Player 2"]
+    @player1 = Player.new("Player 1")
+    @player2 = Player.new("Player 2")
+    @current_players =[@player1, @player2]
   end
 
 # methods
 
 
   def end_of_game?
-    # @player1.score >= 11 || @player2.score >= 11
-    @players.select {|player| player.game_over? }.length > 0
+    
+    @current_players.select {|player| player.game_over? }.length > 0
   end
 
 
 
   def end_round
 
-    puts "#{@player1.status} vs #{@player2.status}"
+    puts "#{@player1.status("P1")} vs #{@player2.status("P2")}"
     puts "------NEW TURN--------"
 
   
@@ -32,10 +31,8 @@ class Game
   def play
 
     until (end_of_game?) do
-      @players.rotate!
-      attack_player = @players.first
-      current_player = @current_player.first
-      @current_player.rotate!
+      current_player = @current_players.first
+      @current_players.rotate!
       puts current_player
 
       puts "Enter a number between 1 and 20"
@@ -55,7 +52,7 @@ class Game
       
       else
         puts "Seriously? No!"
-        attack_player.lives -= 1
+        current_player.lives -= 1
 
       end
 

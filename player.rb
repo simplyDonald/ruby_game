@@ -10,9 +10,14 @@ class Player
   end
 
 
-  def status
-    "#{self.name}: #{self.lives}/3"
+  def status(name) 
+    "#{name}: #{self.lives}/3"
   end
+
+  def to_s
+    self.name
+  end
+
 
   def game_over?
     self.lives == 0
