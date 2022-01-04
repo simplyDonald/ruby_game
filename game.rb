@@ -1,15 +1,13 @@
 require_relative './player'
+require_relative './game_wizard'
 
 class Game
-
-# constructor
-  def initialize(location)
+  def initialize
     #instance variables => available througout the class
-    @player1 = Player.new("LeBron")
-    @player2 = Player.new("Durant")
-    @players =[@player1, @player2].shuffle
-    @location = location
-    @round = 1
+    @player1 = Player.new("P1")
+    @player2 = Player.new("P2")
+    @players =[@player1, @player2]
+    @current_player = ["Player 1","Player 2"]
   end
 
 # methods
@@ -24,33 +22,44 @@ class Game
 
   def end_round
 
-    puts "---------------"
-    puts "    Scoreboard"
-    puts "---------------"
+    puts "#{@player1.status} vs #{@player2.status}"
+    puts "------NEW TURN--------"
 
-    @players.each {|player| puts player.player_status}
-
-
-    @round += 1
+   
 
   end
 
   def play
 
-    puts "let's start the game!"
-    # puts @player1.inspect
-    # puts @player2.inspect
-
-
     until (end_of_game?) do
       @players.rotate!
+      @current_player.rotate!
       attack_player = @players.first
+      current_player = @current_player.first
+      puts current_player
 
-      puts "---------------"
-      puts "    Round##{@round}"
-      puts "---------------"
+      puts "Enter a number between 1 and 20"
+      num1 = $stdin.gets.chomp
+  
+      puts "Enter another number between 1 and 20"
+      num2 = $stdin.gets.chomp
 
-      attack_player.shoots
+      puts "#{current_player}: What does #{num1} plus #{num2} equal?"
+      answer = $stdin.gets.chomp
+
+      quiz = Wizard.new(num1, num2, answer)
+      
+
+      if quiz.result?
+        puts "#{current_player}: YES! You are correct"
+      
+      else
+        puts "Seriously? No!"
+        attack_player.lives -= 1
+
+      end
+
+      
 
       end_round
 
@@ -59,6 +68,3 @@ class Game
   end #closing the while
 end
 
-game1 = Game.new("Montreal")
-
-game1.play 
